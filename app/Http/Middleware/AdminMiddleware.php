@@ -16,6 +16,18 @@ class AdminMiddleware
      */
     public function handle(Request $request, Closure $next)
     {
+        if(Auth::check()){
+            if(Auth::user()->role == 1){
+                return $next($request);
+            }else{
+                
+                return redirect('/home')->with('message', 'Access Denied as not admin ');
+            }
+        }
+        else{
+            return redirect('/login')->with('message', 'Access Denied as you are not logged In ');
+
+        }
         return $next($request);
     }
 }
